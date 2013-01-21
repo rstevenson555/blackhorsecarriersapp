@@ -17,13 +17,6 @@
 
 @synthesize mapView, terminalDetailViewController, movedtozero, initialLocation, searchBar;
 
--(id)init
-{
-    self.locItems = [NSMutableArray arrayWithCapacity:30];
-    //self.locItems = [[NSMutableArray alloc] init];
-    return self;
-}
-
 - (void)viewDidLoad
 {
     self.locItems = [NSMutableArray arrayWithCapacity:30];
@@ -33,7 +26,6 @@
     
     mapView.mapType = MKMapTypeStandard;   // also MKMapTypeSatellite or MKMapTypeHybrid or MKMapTypeStandard
     [self getTerminals];
-    //[self openAddressInMaps:nil];
     
     UIStoryboard* sb = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone"
                                                   bundle:nil];
@@ -171,8 +163,6 @@
 
     if ( !initialLocation && annArray == NULL)
     {
-        [self getTerminals];
-
         initialLocation = userLocation.location;
         
         MKCoordinateRegion region;
@@ -181,33 +171,8 @@
         
         region = [mapv regionThatFits:region];
         [mapv setRegion:region animated:YES];
-        self.currentLocation = [MKMapItem mapItemForCurrentLocation];
-        //[self.currentLocation openInMapsWithLaunchOptions:nil];
-       
     }
 }
-
--(IBAction)openAddressInMaps:(UIButton *)sender {
-    NSString *address = @"2107 S 320th St, FederalWay, WA, 98003";
-    CLGeocoder *geocoder = [[CLGeocoder alloc]init];
-    [geocoder geocodeAddressString:address completionHandler:^(NSArray *placemarks, NSError *error) {
-        CLPlacemark *placemark = placemarks.lastObject;
-        CLLocationCoordinate2D coordinates = CLLocationCoordinate2DMake(placemark.location.coordinate.latitude, placemark.location.coordinate.longitude);
-        MKPlacemark *placeMark = [[MKPlacemark alloc]initWithCoordinate:coordinates addressDictionary:nil];
-        MKMapItem *mapItem = [[MKMapItem alloc]initWithPlacemark:placeMark];
-        mapItem.name = @"Panera Bread";
-        NSDictionary *options = @{MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving};
-        [mapItem openInMapsWithLaunchOptions:options];
-    }];
-}
-
--(MKMapItem*)createMKMapItemFromLatLng:(double)lat:(double)lng {
-    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(lat,lng);
-    MKPlacemark* p = [[MKPlacemark alloc] initWithCoordinate:coordinate addressDictionary:nil];
-    MKMapItem* item =  [[MKMapItem alloc] initWithPlacemark:p];
-    return item;
-}
-
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -227,8 +192,6 @@
         [mapView removeAnnotation:annotation];
     }
     
-    NSLog(@"in plotTerminalLocations");
-    
     NSDictionary * root = [responseString JSONValue];
     
     for (NSDictionary * row in root) {
@@ -244,28 +207,10 @@
         coordinate.latitude = latitude.doubleValue;
         coordinate.longitude = longitude.doubleValue;
         
-        MKMapItem *item = [self createMKMapItemFromLatLng:coordinate.latitude :coordinate.longitude];
-        
-        //NSLog(@"in plotTerminalLocations, in loop");
-
-        
         TerminalAnnotation *annotation = [[TerminalAnnotation alloc] initWithName:displayCity address:fullAddress coordinate:coordinate phone:phone manager:mgr title:ttl];
         
-        [self.locItems addObject: item];
-        NSLog(@"adding items to array");
-        //[mapView addAnnotation:annotation];
+        [mapView addAnnotation:annotation];
     }
-    NSDictionary *options = @{
-MKLaunchOptionsDirectionsModeKey:MKLaunchOptionsDirectionsModeDriving,
-MKLaunchOptionsMapTypeKey:
-    [NSNumber numberWithInteger:MKMapTypeSatellite],
-MKLaunchOptionsShowsTrafficKey:@YES
-    };
-    
-    NSLog(@"array of items: '%@'", self.locItems);
-    
-    [MKMapItem openMapsWithItems:self.locItems launchOptions:options];
-
 }
 
 + (NSString*)substring:(NSString *)inputStr
@@ -306,8 +251,7 @@ MKLaunchOptionsShowsTrafficKey:@YES
         NSString *responseString = [request responseString];
         //NSLog(@"Response: %@", responseString);
         // Add new line inside refreshTapped, in the setCompletionBlock, right after logging the response string
-        //[self plotTerminalLocations:responseString];
-        NSLog(@"Calling plotTerminalLocations");
+        [self plotTerminalLocations:responseString];
     }];
     
     [request setFailedBlock:^{
