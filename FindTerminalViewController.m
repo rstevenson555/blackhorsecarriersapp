@@ -15,29 +15,42 @@
 
 @implementation FindTerminalViewController
 
-@synthesize mapView, terminalDetailViewController, movedtozero, initialLocation, searchBar;
+@synthesize mapView, terminalDetailViewController, movedtozero, initialLocation, searchBar, locItems;
 
--(id)init
-{
-    self.locItems = [NSMutableArray arrayWithCapacity:30];
-    //self.locItems = [[NSMutableArray alloc] init];
-    return self;
+void putstr(NSString *str) {
+    NSLog(@"'%@'",str);
 }
 
 - (void)viewDidLoad
 {
-    self.locItems = [NSMutableArray arrayWithCapacity:30];
-    
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
+    self.locItems = [NSMutableArray arrayWithCapacity:0];
+    //NSLog(@"viewDidLoad '%@'",self.locItems);
+    
     mapView.mapType = MKMapTypeStandard;   // also MKMapTypeSatellite or MKMapTypeHybrid or MKMapTypeStandard
     [self getTerminals];
+    putstr(@"getTerminals complete");
     //[self openAddressInMaps:nil];
     
     UIStoryboard* sb = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone"
                                                  bundle:nil];
     terminalDetailViewController = [sb instantiateViewControllerWithIdentifier:@"TerminalDetailViewController"];
+    
+    NSLog(@"viewDidLoad array of items: '%@'", self.locItems);
+    NSDictionary *options = @{
+        MKLaunchOptionsDirectionsModeKey:MKLaunchOptionsDirectionsModeDriving,
+        MKLaunchOptionsMapTypeKey:
+            [NSNumber numberWithInteger:MKMapTypeStandard],
+        //MKLaunchOptionsShowsTrafficKey:@YES
+        MKLaunchOptionsShowsTrafficKey:@NO
+    };
+        NSLog(@"viewDidLoad '%@'", self.locItems);
+    // [MKMapItem openMapsWithItems:self.locItems launchOptions:options];
+    
+    self.currentLocation = [MKMapItem mapItemForCurrentLocation];
+    //[self.currentLocation openInMapsWithLaunchOptions:nil];
     
 }
 
@@ -59,19 +72,33 @@
     //NSArray *annArray = [mapView selectedAnnotations];
     NSArray *annArray = mapView.selectedAnnotations;
     TerminalAnnotation *annotation = annArray[0];
-    
+
+    NSDictionary *options = @{
+        MKLaunchOptionsDirectionsModeKey:MKLaunchOptionsDirectionsModeDriving,
+        MKLaunchOptionsMapTypeKey:
+            [NSNumber numberWithInteger:MKMapTypeStandard],
+        //MKLaunchOptionsShowsTrafficKey:@YES
+        MKLaunchOptionsShowsTrafficKey:@NO
+    };
+   
+    NSMutableArray *directionArray = [NSMutableArray arrayWithCapacity:0];
+    [directionArray addObject:self.currentLocation];
+    [directionArray addObject:annotation.mapitem];
+    [MKMapItem openMapsWithItems:directionArray launchOptions:options];
+
     //[MKMapItem
     
     // the detail view does not want a toolbar so hide it
-    [self.navigationController setToolbarHidden:YES animated:NO];
+    /*[self.navigationController setToolbarHidden:YES animated:NO];
     [self.navigationController pushViewController:terminalDetailViewController animated:YES];
+    */
     
     //TerminalAnnotation *annotation = (TerminalAnnotation*)[[mapView annotations] objectAtIndex:tag];
     //NSLog(@"annotation clicked is: %@", annotation);
     // 2700 Saucon Valley Road,Center Valley,PA 18034
     
     /* set the field labels on the terminal Detail View */
-    terminalDetailViewController.locationName.text = annotation.name;
+    /*terminalDetailViewController.locationName.text = annotation.name;
     terminalDetailViewController.locationAddress.text = annotation.street;
     terminalDetailViewController.locationCity.text = annotation.city;
     
@@ -90,9 +117,10 @@
     result = [result stringByAppendingString:annotation.city];
     result = [result stringByAppendingString:@" "];
     result = [result stringByAppendingString:annotation.state_zip];
+     */
     
     /* set the city label to City + state */
-    terminalDetailViewController.locationCity.text = result;
+    //terminalDetailViewController.locationCity.text = result;
 }
 
 #pragma mark -
@@ -166,24 +194,29 @@
 
 - (void)mapView:(MKMapView *)mapv didUpdateUserLocation:(MKUserLocation *)userLocation
 {
-    NSArray *annArray = [mapView selectedAnnotations];
-    // NSLog(@"selected annotation: %@", annArray);
-    
-    if ( !initialLocation && annArray == NULL)
+    if ( initialLocation==NULL )
     {
-        [self getTerminals];
-        
         initialLocation = userLocation.location;
         
-        MKCoordinateRegion region;
-        region.center = mapv.userLocation.coordinate;
-        region.span = MKCoordinateSpanMake(0.1, 0.1);
-        
-        region = [mapv regionThatFits:region];
-        [mapv setRegion:region animated:YES];
+        /*MKCoordinateRegion region;
+         region.center = mapv.userLocation.coordinate;
+         region.span = MKCoordinateSpanMake(0.1, 0.1);
+         
+         region = [mapv regionThatFits:region];
+         [mapv setRegion:region animated:YES]; */
         self.currentLocation = [MKMapItem mapItemForCurrentLocation];
         //[self.currentLocation openInMapsWithLaunchOptions:nil];
+        NSDictionary *options = @{
+            MKLaunchOptionsDirectionsModeKey:MKLaunchOptionsDirectionsModeDriving,
+            MKLaunchOptionsMapTypeKey:
+                [NSNumber numberWithInteger:MKMapTypeStandard],
+            MKLaunchOptionsShowsTrafficKey:@NO
+        };
+        NSLog(@"mapVIew openMapWithItems '%@'", self.locItems);
+        //[MKMapItem openMapsWithItems:self.locItems launchOptions:options];
         
+        putstr(@"mapView done");
+        //NSLog(@"array of items: '%@'", self.locItems);
     }
 }
 
@@ -227,8 +260,6 @@
         [mapView removeAnnotation:annotation];
     }
     
-    NSLog(@"in plotTerminalLocations");
-    
     NSDictionary * root = [responseString JSONValue];
     
     for (NSDictionary * row in root) {
@@ -247,24 +278,16 @@
         MKMapItem *item = [self createMKMapItemFromLatLng:coordinate.latitude :coordinate.longitude];
         
         //NSLog(@"in plotTerminalLocations, in loop");
-        
+        item.phoneNumber = phone;
+        item.name = displayCity;
+        [self.locItems addObject:item];
         
         TerminalAnnotation *annotation = [[TerminalAnnotation alloc] initWithName:displayCity address:fullAddress coordinate:coordinate phone:phone manager:mgr title:ttl];
+        annotation.mapitem = item;
         
-        [self.locItems addObject: item];
-        NSLog(@"adding items to array");
-        //[mapView addAnnotation:annotation];
+        [mapView addAnnotation:annotation];
     }
-    NSDictionary *options = @{
-MKLaunchOptionsDirectionsModeKey:MKLaunchOptionsDirectionsModeDriving,
-MKLaunchOptionsMapTypeKey:
-    [NSNumber numberWithInteger:MKMapTypeSatellite],
-MKLaunchOptionsShowsTrafficKey:@YES
-    };
     
-    NSLog(@"array of items: '%@'", self.locItems);
-    
-    [MKMapItem openMapsWithItems:self.locItems launchOptions:options];
     
 }
 
@@ -306,8 +329,8 @@ MKLaunchOptionsShowsTrafficKey:@YES
         NSString *responseString = [request responseString];
         //NSLog(@"Response: %@", responseString);
         // Add new line inside refreshTapped, in the setCompletionBlock, right after logging the response string
-        //[self plotTerminalLocations:responseString];
-        NSLog(@"Calling plotTerminalLocations");
+        [self plotTerminalLocations:responseString];
+        //NSLog(@"Calling plotTerminalLocations");
     }];
     
     [request setFailedBlock:^{

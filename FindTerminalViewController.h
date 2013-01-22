@@ -17,12 +17,13 @@
 @interface FindTerminalViewController : UIViewController <MKMapViewDelegate,UISearchBarDelegate>
 
 @property (assign) boolean_t movedtozero;
-@property (nonatomic, weak) CLLocation* initialLocation;
+@property (retain, nonatomic ) CLLocation* initialLocation;
+@property (retain, nonatomic) NSMutableArray *locItems;
+@property (retain, nonatomic) MKMapItem *currentLocation;
+@property (nonatomic, retain) IBOutlet TerminalDetailViewController *terminalDetailViewController;
+
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
-@property (nonatomic, retain) IBOutlet TerminalDetailViewController *terminalDetailViewController;
-@property (weak, nonatomic) MKMapItem *currentLocation;
-@property (weak, nonatomic) NSMutableArray *locItems;
 
 - (IBAction)refreshTapped:(id)sender;
 + (id)stringToNum:(id)str;

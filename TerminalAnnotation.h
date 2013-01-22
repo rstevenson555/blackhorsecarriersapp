@@ -20,6 +20,7 @@
 @property (copy) NSString *phone;
 @property (copy) NSString *managerName;
 @property (copy) NSString *managerTitle;
+@property (retain,nonatomic) MKMapItem *mapitem;
 
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
 
