@@ -297,7 +297,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="photo-frame.png" id="phy-A0-ROD">
-                                <rect key="frame" x="-3" y="6" width="327" height="128"/>
+                                <rect key="frame" x="-3" y="6" width="327" height="141"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="BEc-4s-Izc">
@@ -336,15 +336,31 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" image="BlackHorseLogo.gif" id="2ki-Jn-ZzO">
-                                <rect key="frame" x="20" y="136" width="280" height="252"/>
+                                <rect key="frame" x="15" y="142" width="280" height="252"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" reversesTitleShadowWhenHighlighted="YES" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" id="0sn-CT-7XH">
+                                <rect key="frame" x="213" y="105" width="100" height="23"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                                <state key="normal" title="Directions...">
+                                    <color key="titleColor" red="0.19607843137254902" green="0.30980392156862746" blue="0.52156862745098043" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="getDrivingDirections:" destination="1CU-a2-dgx" eventType="touchUpInside" id="ZoJ-ff-73G"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.98333333333333328" green="0.96666666666666667" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <navigationItem key="navigationItem" id="ZHj-Fp-mRX"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
+                        <outlet property="drivingDirections" destination="0sn-CT-7XH" id="apu-1d-2yr"/>
                         <outlet property="locationAddress" destination="6m0-Zk-CL4" id="5GE-5g-pxa"/>
                         <outlet property="locationCity" destination="qUe-UW-omQ" id="XiH-WT-nse"/>
                         <outlet property="locationManager" destination="2kQ-rT-vWq" id="fI1-pI-qdo"/>
