@@ -12,25 +12,34 @@
 #import "ASIHTTPRequest.h"
 #import "TerminalDetailViewController.h"
 #import "Constants.h"
+#import <AddressBook/AddressBook.h>
 
 @implementation FindTerminalViewController
 
-@synthesize mapView, terminalDetailViewController, movedtozero, initialLocation, searchBar;
+@synthesize mapView, terminalDetailViewController, movedtozero, initialLocation, searchBar, locItems;
+
+void putstr(NSString *str) {
+    NSLog(@"'%@'",str);
+}
 
 - (void)viewDidLoad
 {
-    self.locItems = [NSMutableArray arrayWithCapacity:30];
-    
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
+    self.locItems = [NSMutableArray arrayWithCapacity:0];
+    
     mapView.mapType = MKMapTypeStandard;   // also MKMapTypeSatellite or MKMapTypeHybrid or MKMapTypeStandard
+    
     [self getTerminals];
     
+    putstr(@"getTerminals complete");
+    
     UIStoryboard* sb = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone"
-                                                  bundle:nil];
+                                                 bundle:nil];
     terminalDetailViewController = [sb instantiateViewControllerWithIdentifier:@"TerminalDetailViewController"];
     
+    self.currentLocation = [MKMapItem mapItemForCurrentLocation];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -48,7 +57,6 @@
 
 - (void)showDetails:(id)sender
 {
-    //NSArray *annArray = [mapView selectedAnnotations];
     NSArray *annArray = mapView.selectedAnnotations;
     TerminalAnnotation *annotation = annArray[0];
     
@@ -62,6 +70,8 @@
     //NSLog(@"annotation clicked is: %@", annotation);
     // 2700 Saucon Valley Road,Center Valley,PA 18034
     
+    terminalDetailViewController.findTerminalViewController = self;
+    
     /* set the field labels on the terminal Detail View */
     terminalDetailViewController.locationName.text = annotation.name;
     terminalDetailViewController.locationAddress.text = annotation.street;
@@ -72,11 +82,11 @@
     managerAndTitle = [managerAndTitle stringByAppendingString:@" ("];
     managerAndTitle = [managerAndTitle stringByAppendingString:annotation.managerTitle];
     managerAndTitle = [managerAndTitle stringByAppendingString:@")"];
-
+    
     terminalDetailViewController.locationManager.text = managerAndTitle;
     terminalDetailViewController.locationPhone.text = annotation.phone;
     terminalDetailViewController.locationTitle.text = annotation.title;
-
+    
     // city, state zip
     NSString *result = @"";
     result = [result stringByAppendingString:annotation.city];
@@ -95,7 +105,7 @@
     // if it's the user location, just return nil.
     if ([annotation isKindOfClass:[MKUserLocation class]])
         return nil;
-        
+    
     if ([annotation isKindOfClass:[TerminalAnnotation class]]) // for Golden Gate Bridge
     {
         // try to dequeue an existing pin view first
@@ -146,33 +156,57 @@
 
 // Tell MKMapView to zoom to current location when found
 /*- (void)mapView:(MKMapView *)mv didUpdateUserLocation:(MKUserLocation *)userLocation
-{
-    if (!movedtozero) {
-        NSLog(@"didUpdateUserLocation just got called!");
-        
-        //MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance([userLocation coordinate], 250, 250);
-        //[mv setRegion:region animated:YES];
-    }
-    movedtozero = true;
-}*/
+ {
+ if (!movedtozero) {
+ NSLog(@"didUpdateUserLocation just got called!");
+ 
+ //MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance([userLocation coordinate], 250, 250);
+ //[mv setRegion:region animated:YES];
+ }
+ movedtozero = true;
+ }*/
 
 - (void)mapView:(MKMapView *)mapv didUpdateUserLocation:(MKUserLocation *)userLocation
 {
-    NSArray *annArray = [mapView selectedAnnotations];
-   // NSLog(@"selected annotation: %@", annArray);
-
-    if ( !initialLocation && annArray == NULL)
+    if ( initialLocation==NULL )
     {
         initialLocation = userLocation.location;
         
+        CLLocationCoordinate2D currentCoord = userLocation.location.coordinate; // Grab user's coordinate
+        MKCoordinateSpan span = {.latitudeDelta = 0.02, .longitudeDelta = 0.02}; // set range of zoom
         MKCoordinateRegion region;
-        region.center = mapv.userLocation.coordinate;
-        region.span = MKCoordinateSpanMake(0.1, 0.1);
+        region.center = currentCoord;
+        region.span = span;
         
-        region = [mapv regionThatFits:region];
-        [mapv setRegion:region animated:YES];
+        [mapView setRegion:region animated:YES]; // animate and center to said region
+        [mapView regionThatFits:region]; // alters aspect ratio of map to fit on screen
+        
     }
 }
+
+-(IBAction)openAddressInMaps:(UIButton *)sender {
+    NSString *address = @"2107 S 320th St, FederalWay, WA, 98003";
+    CLGeocoder *geocoder = [[CLGeocoder alloc]init];
+    [geocoder geocodeAddressString:address completionHandler:^(NSArray *placemarks, NSError *error) {
+        CLPlacemark *placemark = placemarks.lastObject;
+        CLLocationCoordinate2D coordinates = CLLocationCoordinate2DMake(placemark.location.coordinate.latitude, placemark.location.coordinate.longitude);
+        MKPlacemark *placeMark = [[MKPlacemark alloc]initWithCoordinate:coordinates addressDictionary:nil];
+        MKMapItem *mapItem = [[MKMapItem alloc]initWithPlacemark:placeMark];
+        mapItem.name = @"Panera Bread";
+        NSDictionary *options = @{MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving};
+        [mapItem openInMapsWithLaunchOptions:options];
+    }];
+}
+
+-(MKMapItem*)createMKMapItemFromLatLng:(double)lat:(double)lng:(NSDictionary*)map_address {
+    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(lat,lng);
+    //NSLog(@"viewDidLoad '%@'",self.locItems);
+    
+    MKPlacemark* p = [[MKPlacemark alloc] initWithCoordinate:coordinate addressDictionary:map_address];
+    MKMapItem* item =  [[MKMapItem alloc] initWithPlacemark:p];
+    return item;
+}
+
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -207,7 +241,27 @@
         coordinate.latitude = latitude.doubleValue;
         coordinate.longitude = longitude.doubleValue;
         
-        TerminalAnnotation *annotation = [[TerminalAnnotation alloc] initWithName:displayCity address:fullAddress coordinate:coordinate phone:phone manager:mgr title:ttl];
+        NSDictionary *address = @{
+        (NSString *)kABPersonAddressStreetKey: fullAddress,
+        (NSString *)kABPersonAddressCityKey: displayCity,
+        (NSString *)kABPersonAddressStateKey: @"NY",
+        (NSString *)kABPersonAddressZIPKey: @"10118",
+        (NSString *)kABPersonAddressCountryCodeKey: @"US"
+        };
+        
+        MKMapItem *item = [self createMKMapItemFromLatLng:coordinate.latitude :coordinate.longitude :address];
+        
+        //NSLog(@"in plotTerminalLocations, in loop");
+        item.phoneNumber = phone;
+        item.name = displayCity;
+        [self.locItems addObject:item];
+        
+        TerminalAnnotation *annotation = [[TerminalAnnotation alloc]
+                                          initWithName:displayCity
+                                          address:fullAddress
+                                          coordinate:coordinate
+                                          phone:phone manager:mgr title:ttl];
+        annotation.mapitem = item;
         
         [mapView addAnnotation:annotation];
     }
@@ -229,10 +283,6 @@
 }
 
 - (void)getTerminals {
-    // 1
-    //MKCoordinateRegion mapRegion = [mapView region];
-    //CLLocationCoordinate2D centerLocation = mapRegion.center;
-    
     // 3
     NSURL *url = [NSURL URLWithString:GET_TERMINALS_URL];
     
@@ -249,7 +299,6 @@
     [request setDelegate:self];
     [request setCompletionBlock:^{
         NSString *responseString = [request responseString];
-        //NSLog(@"Response: %@", responseString);
         // Add new line inside refreshTapped, in the setCompletionBlock, right after logging the response string
         [self plotTerminalLocations:responseString];
     }];
@@ -305,27 +354,42 @@
         //Error checking
         
         CLPlacemark *placemark = placemarks[0];
+        CLLocationCoordinate2D currentCoord = CLLocationCoordinate2DMake(placemark.region.center.latitude, placemark.region.center.longitude);
+        MKCoordinateSpan span = {.latitudeDelta = 0.3, .longitudeDelta = 0.3}; // set range of zoom
         MKCoordinateRegion region;
-        region.center.latitude = placemark.region.center.latitude;
-        region.center.longitude = placemark.region.center.longitude;
-        MKCoordinateSpan span;
-        double radius = placemark.region.radius / 1000; // convert to km
+        region.center = currentCoord;
+        region.span = span;
         
-        NSLog(@"[searchBarSearchButtonClicked] Radius is %f", radius);
-        span.latitudeDelta = radius / 112.0;
-        span.longitudeDelta = radius / 112.0;
+        [mapView setRegion:region animated:YES]; // animate and center to said region
+        [mapView regionThatFits:region]; // alters aspect ratio of map to fit on screen
         
-        region.span.longitudeDelta = span.longitudeDelta;
-        region.span.latitudeDelta = span.latitudeDelta;
-        
-        [mapView setRegion:region animated:YES];
     }];
 }
 
+/** called when you click in the search bar **/
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)sb
 {
-    [sb setText:@""];
-    //searchBar.text = @"";
+    sb.text = @"";
+}
+
+/* when the user clicks 'get directions' */
+-(id)getDrivingDirections
+{
+    NSArray *annArray = mapView.selectedAnnotations;
+    TerminalAnnotation *annotation = annArray[0];
+    
+    NSDictionary *options = @{
+        MKLaunchOptionsDirectionsModeKey:MKLaunchOptionsDirectionsModeDriving,
+        MKLaunchOptionsMapTypeKey:
+            [NSNumber numberWithInteger:MKMapTypeStandard],
+            MKLaunchOptionsShowsTrafficKey:@YES
+    };
+    
+    NSMutableArray *directionArray = [NSMutableArray arrayWithCapacity:0];
+    [directionArray addObject:self.currentLocation];
+    [directionArray addObject:annotation.mapitem];
+    [MKMapItem openMapsWithItems:directionArray launchOptions:options];
+    return self;
 }
 
 @end
