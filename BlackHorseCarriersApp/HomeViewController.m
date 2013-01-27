@@ -13,6 +13,7 @@
 @end
 
 @implementation HomeViewController
+@synthesize nav;
 
 - (void)viewDidLoad
 {
