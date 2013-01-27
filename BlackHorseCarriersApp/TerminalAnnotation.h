@@ -10,7 +10,7 @@
 #import <MapKit/MapKit.h>
 
 @interface TerminalAnnotation : NSObject <MKAnnotation> {
-
+    
 }
 
 @property (copy) NSString *name;
@@ -20,6 +20,7 @@
 @property (copy) NSString *phone;
 @property (copy) NSString *managerName;
 @property (copy) NSString *managerTitle;
+@property (retain,nonatomic) MKMapItem *mapitem;
 
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
 
