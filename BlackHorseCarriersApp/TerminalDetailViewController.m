@@ -15,7 +15,7 @@
 
 @implementation TerminalDetailViewController
 
-@synthesize locationName, locationCity, locationAddress;
+@synthesize locationName, locationCity, locationAddress, findTerminalViewController;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -31,14 +31,22 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    //[[self navigationController]
     //[[self navigationController] setNavigationBarHidden:false];
-
 }
 
 - (void)viewDidUnload {
     locationName = nil;
     locationCity = nil;
     locationAddress = nil;
+    [self setDrivingDirections:nil];
     [super viewDidUnload];
 }
+
+- (IBAction)getDrivingDirections:(id)sender {
+    NSLog(@"getDrivingDirections action called");
+    [self.navigationController popToViewController:self.findTerminalViewController animated:YES];
+    [self.findTerminalViewController getDrivingDirections];
+}
+
 @end
