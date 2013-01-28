@@ -355,7 +355,7 @@ void putstr(NSString *str) {
         
         CLPlacemark *placemark = placemarks[0];
         CLLocationCoordinate2D currentCoord = CLLocationCoordinate2DMake(placemark.region.center.latitude, placemark.region.center.longitude);
-        MKCoordinateSpan span = {.latitudeDelta = 0.3, .longitudeDelta = 0.3}; // set range of zoom
+        MKCoordinateSpan span = {.latitudeDelta = 0.4, .longitudeDelta = 0.4}; // set range of zoom
         MKCoordinateRegion region;
         region.center = currentCoord;
         region.span = span;
