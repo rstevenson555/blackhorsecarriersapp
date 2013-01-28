@@ -15,7 +15,7 @@
 
 @implementation TerminalDetailViewController
 
-@synthesize locationName, locationCity, locationAddress, findTerminalViewController;
+@synthesize locationName, findTerminalViewController, locationDetailViewer;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -30,15 +30,14 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib
 - (void)viewDidLoad
 {
+    // adjust the padding insets that was shifting the text to the right and down
+    self.locationDetailViewer.contentInset = UIEdgeInsetsMake(-8,-8,-8,-8);
+    
     [super viewDidLoad];
-    //[[self navigationController]
-    //[[self navigationController] setNavigationBarHidden:false];
 }
 
 - (void)viewDidUnload {
     locationName = nil;
-    locationCity = nil;
-    locationAddress = nil;
     [self setDrivingDirections:nil];
     [super viewDidUnload];
 }

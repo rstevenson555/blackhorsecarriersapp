@@ -11,11 +11,7 @@
 @interface TerminalDetailViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UILabel *locationName;
-@property (weak, nonatomic) IBOutlet UILabel *locationCity;
-@property (weak, nonatomic) IBOutlet UILabel *locationAddress;
-@property (weak, nonatomic) IBOutlet UILabel * locationManager;
-@property (weak, nonatomic) IBOutlet UILabel * locationTitle;
-@property (weak, nonatomic) IBOutlet UILabel * locationPhone;
+@property (weak, nonatomic) IBOutlet UITextView * locationDetailViewer;
 @property (weak, nonatomic) IBOutlet UIButton *drivingDirections;
 @property (weak, nonatomic) FindTerminalViewController* findTerminalViewController;
 
