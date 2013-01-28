@@ -55,7 +55,7 @@ void putstr(NSString *str) {
     // Release any retained subviews of the main view.
 }
 
-- (void)showDetails:(id)sender
+- (void)showTerminalDetails:(id)sender
 {
     NSArray *annArray = mapView.selectedAnnotations;
     TerminalAnnotation *annotation = annArray[0];
@@ -74,8 +74,6 @@ void putstr(NSString *str) {
     
     /* set the field labels on the terminal Detail View */
     terminalDetailViewController.locationName.text = annotation.name;
-    terminalDetailViewController.locationAddress.text = annotation.street;
-    terminalDetailViewController.locationCity.text = annotation.city;
     
     NSString *managerAndTitle = @"";
     managerAndTitle = [managerAndTitle stringByAppendingString:annotation.managerName];
@@ -83,18 +81,44 @@ void putstr(NSString *str) {
     managerAndTitle = [managerAndTitle stringByAppendingString:annotation.managerTitle];
     managerAndTitle = [managerAndTitle stringByAppendingString:@")"];
     
-    terminalDetailViewController.locationManager.text = managerAndTitle;
-    terminalDetailViewController.locationPhone.text = annotation.phone;
-    terminalDetailViewController.locationTitle.text = annotation.title;
-    
     // city, state zip
-    NSString *result = @"";
-    result = [result stringByAppendingString:annotation.city];
-    result = [result stringByAppendingString:@" "];
-    result = [result stringByAppendingString:annotation.state_zip];
+    NSString *city_state_zip = @"";
+    city_state_zip = [city_state_zip stringByAppendingString:annotation.city];
+    city_state_zip = [city_state_zip stringByAppendingString:@" "];
+    city_state_zip = [city_state_zip stringByAppendingString:annotation.state_zip];
+    city_state_zip = [city_state_zip stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     
     /* set the city label to City + state */
-    terminalDetailViewController.locationCity.text = result;
+    
+    NSString *buffer = @"";
+    /*
+    buffer = [buffer stringByAppendingString:annotation.street];
+    buffer = [buffer stringByAppendingString:@"\n"];
+    buffer = [buffer stringByAppendingString:city_state_zip];
+    buffer = [buffer stringByAppendingString:@"\n"];
+    buffer = [buffer stringByAppendingString:managerAndTitle];
+    buffer = [buffer stringByAppendingString:@"\n"];
+    buffer = [buffer stringByAppendingString:annotation.phone]; 
+     */
+    
+    buffer = [buffer stringByAppendingString:managerAndTitle];
+    buffer = [buffer stringByAppendingString:@"\n"];
+    buffer = [buffer stringByAppendingString:annotation.street];
+    buffer = [buffer stringByAppendingString:@"\n"];
+    buffer = [buffer stringByAppendingString:city_state_zip];
+    buffer = [buffer stringByAppendingString:@"\n"];
+    buffer = [buffer stringByAppendingString:annotation.phone];
+    
+    
+    terminalDetailViewController.locationDetailViewer.text = buffer;
+    
+    /**
+     Location Name
+     address
+     city 
+     manager
+     phone
+     **/
 }
 
 #pragma mark -
@@ -130,7 +154,7 @@ void putstr(NSString *str) {
             UIButton* rightButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
             
             [rightButton addTarget:self
-                            action:@selector(showDetails:)
+                            action:@selector(showTerminalDetails:)
                   forControlEvents:UIControlEventTouchUpInside];
             customPinView.rightCalloutAccessoryView = rightButton;
             
