@@ -219,8 +219,8 @@ void putstr(NSString *str) {
     }];
 }
 
--(MKMapItem*)createMKMapItemFromLatLng:(double)lat:(double)lng:(NSDictionary*)map_address {
-    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(lat,lng);
+-(MKMapItem*)createMKMapItemFromLatLng:(double)latitude :(double)longitude :(NSDictionary*)map_address {
+    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(latitude,longitude);
     //NSLog(@"viewDidLoad '%@'",self.locItems);
     
     MKPlacemark* p = [[MKPlacemark alloc] initWithCoordinate:coordinate addressDictionary:map_address];
