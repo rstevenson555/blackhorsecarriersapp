@@ -50,7 +50,6 @@ void putstr(NSString *str) {
 - (void)viewDidUnload
 {
     mapView = nil;
-    //[self setSearch_bar:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -59,8 +58,6 @@ void putstr(NSString *str) {
 {
     NSArray *annArray = mapView.selectedAnnotations;
     TerminalAnnotation *annotation = annArray[0];
-    
-    //[MKMapItem
     
     // the detail view does not want a toolbar so hide it
     [self.navigationController setToolbarHidden:YES animated:NO];
