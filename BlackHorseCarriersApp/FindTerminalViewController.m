@@ -35,10 +35,18 @@ void putstr(NSString *str) {
     
     putstr(@"getTerminals complete");
     
-    UIStoryboard* sb = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone"
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        UIStoryboard* sb = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone"
                                                  bundle:nil];
-    terminalDetailViewController = [sb instantiateViewControllerWithIdentifier:@"TerminalDetailViewController"];
-    
+        terminalDetailViewController = [sb instantiateViewControllerWithIdentifier:@"TerminalDetailViewController"];
+    }
+
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        UIStoryboard* sb_pad = [UIStoryboard storyboardWithName:@"MainStoryboard_iPad"
+                                                 bundle:nil];
+        terminalDetailViewController = [sb_pad instantiateViewControllerWithIdentifier:@"TerminalDetailViewController"];
+    }
+
     self.currentLocation = [MKMapItem mapItemForCurrentLocation];
 }
 
