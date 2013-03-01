@@ -348,7 +348,6 @@
         <class className="ContactUSViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ContactUSViewController.h"/>
             <relationships>
-                <relationship kind="action" name="submitForm:"/>
                 <relationship kind="outlet" name="requester_comments" candidateClass="UITextView"/>
                 <relationship kind="outlet" name="requester_email" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="requester_name" candidateClass="UITextField"/>

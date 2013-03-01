@@ -357,48 +357,6 @@
         <image name="photo-frame.png" width="297" height="199"/>
         <image name="second" width="16" height="16"/>
     </resources>
-    <classes>
-        <class className="ContactUSViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ContactUSViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="requester_comments" candidateClass="UITextView"/>
-                <relationship kind="outlet" name="requester_email" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="requester_name" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="submit" candidateClass="UIBarButtonItem"/>
-            </relationships>
-        </class>
-        <class className="FindTerminalViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/FindTerminalViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="refreshTapped:"/>
-                <relationship kind="outlet" name="mapView" candidateClass="MKMapView"/>
-                <relationship kind="outlet" name="searchBar" candidateClass="UISearchBar"/>
-                <relationship kind="outlet" name="terminalDetailViewController" candidateClass="TerminalDetailViewController"/>
-            </relationships>
-        </class>
-        <class className="HomeViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/HomeViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="nav" candidateClass="UINavigationBar"/>
-            </relationships>
-        </class>
-        <class className="JobApplicationViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/JobApplicationViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="webView" candidateClass="UIWebView"/>
-            </relationships>
-        </class>
-        <class className="TerminalDetailViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/TerminalDetailViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="getDrivingDirections:"/>
-                <relationship kind="outlet" name="directions" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="drivingDirections" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="locationDetailViewer" candidateClass="UITextView"/>
-                <relationship kind="outlet" name="locationName" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
