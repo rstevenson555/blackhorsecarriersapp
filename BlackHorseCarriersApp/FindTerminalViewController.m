@@ -94,15 +94,6 @@ void putstr(NSString *str) {
     /* set the city label to City + state */
 
     NSString *buffer = @"";
-    /*
-    buffer = [buffer stringByAppendingString:annotation.street];
-    buffer = [buffer stringByAppendingString:@"\n"];
-    buffer = [buffer stringByAppendingString:city_state_zip];
-    buffer = [buffer stringByAppendingString:@"\n"];
-    buffer = [buffer stringByAppendingString:managerAndTitle];
-    buffer = [buffer stringByAppendingString:@"\n"];
-    buffer = [buffer stringByAppendingString:annotation.phone]; 
-     */
 
     buffer = [buffer stringByAppendingString:managerAndTitle];
     buffer = [buffer stringByAppendingString:@"\n"];
@@ -111,7 +102,6 @@ void putstr(NSString *str) {
     buffer = [buffer stringByAppendingString:city_state_zip];
     buffer = [buffer stringByAppendingString:@"\n"];
     buffer = [buffer stringByAppendingString:annotation.phone];
-
 
     terminalDetailViewController.locationDetailViewer.text = buffer;
     if (!SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
