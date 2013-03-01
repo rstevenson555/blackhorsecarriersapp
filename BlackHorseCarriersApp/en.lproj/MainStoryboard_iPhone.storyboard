@@ -64,11 +64,11 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" reversesTitleShadowWhenHighlighted="YES" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" id="K2S-hJ-gWU">
-                                <rect key="frame" x="0.0" y="372" width="84" height="44"/>
+                                <rect key="frame" x="0.0" y="372" width="121" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                 <inset key="contentEdgeInsets" minX="5" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                <state key="normal" title="Benefits">
+                                <state key="normal" title="BHC Website">
                                     <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -105,10 +105,10 @@
             </objects>
             <point key="canvasLocation" x="17" y="490"/>
         </scene>
-        <!--Benefits View Controller - Benefits-->
+        <!--Website View Controller - BHC Website-->
         <scene sceneID="0dJ-fK-385">
             <objects>
-                <viewController id="qgL-oI-5D4" customClass="ADPBenefitsViewController" sceneMemberID="viewController">
+                <viewController id="qgL-oI-5D4" customClass="BHCWebsiteViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="zKY-Ad-pdr">
                         <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -122,7 +122,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="ADP" id="01D-2i-oBA"/>
-                    <navigationItem key="navigationItem" title="Benefits" id="HIm-eY-LPX">
+                    <navigationItem key="navigationItem" title="BHC Website" id="HIm-eY-LPX">
                         <barButtonItem key="backBarButtonItem" title="Back" id="Pz4-F9-jvh"/>
                     </navigationItem>
                     <connections>
@@ -357,6 +357,48 @@
         <image name="photo-frame.png" width="297" height="199"/>
         <image name="second" width="16" height="16"/>
     </resources>
+    <classes>
+        <class className="ContactUSViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ContactUSViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="requester_comments" candidateClass="UITextView"/>
+                <relationship kind="outlet" name="requester_email" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="requester_name" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="submit" candidateClass="UIBarButtonItem"/>
+            </relationships>
+        </class>
+        <class className="FindTerminalViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/FindTerminalViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="refreshTapped:"/>
+                <relationship kind="outlet" name="mapView" candidateClass="MKMapView"/>
+                <relationship kind="outlet" name="searchBar" candidateClass="UISearchBar"/>
+                <relationship kind="outlet" name="terminalDetailViewController" candidateClass="TerminalDetailViewController"/>
+            </relationships>
+        </class>
+        <class className="HomeViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/HomeViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="nav" candidateClass="UINavigationBar"/>
+            </relationships>
+        </class>
+        <class className="JobApplicationViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/JobApplicationViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="webView" candidateClass="UIWebView"/>
+            </relationships>
+        </class>
+        <class className="TerminalDetailViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/TerminalDetailViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="getDrivingDirections:"/>
+                <relationship kind="outlet" name="directions" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="drivingDirections" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="locationDetailViewer" candidateClass="UITextView"/>
+                <relationship kind="outlet" name="locationName" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

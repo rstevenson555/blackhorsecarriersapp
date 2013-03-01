@@ -9,6 +9,7 @@
 #import "FindTerminalViewController.h"
 
 @interface TerminalDetailViewController : UIViewController
+@property (weak, nonatomic) IBOutlet UIButton *directions;
 
 @property (weak, nonatomic) IBOutlet UILabel *locationName;
 @property (weak, nonatomic) IBOutlet UITextView * locationDetailViewer;

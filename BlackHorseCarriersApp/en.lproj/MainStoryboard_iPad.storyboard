@@ -64,11 +64,11 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" reversesTitleShadowWhenHighlighted="YES" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" id="S01-PY-l1o">
-                                <rect key="frame" x="0.0" y="916" width="119" height="44"/>
+                                <rect key="frame" x="0.0" y="916" width="144" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                                 <inset key="contentEdgeInsets" minX="5" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                <state key="normal" title="Benefits">
+                                <state key="normal" title="BHC Website">
                                     <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -233,6 +233,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="MY9-ki-9mM"/>
                     <connections>
+                        <outlet property="directions" destination="yjY-s0-y25" id="llg-ZA-7T8"/>
                         <outlet property="locationDetailViewer" destination="msB-ET-d2f" id="liE-HK-EqY"/>
                     </connections>
                 </viewController>
@@ -309,10 +310,10 @@
             </objects>
             <point key="canvasLocation" x="2715" y="112"/>
         </scene>
-        <!--Benefits View Controller - Benefits-->
+        <!--Website View Controller - BHC Website-->
         <scene sceneID="Kaa-7S-9Ar">
             <objects>
-                <viewController id="T3a-Zk-HDp" customClass="ADPBenefitsViewController" sceneMemberID="viewController">
+                <viewController id="T3a-Zk-HDp" customClass="BHCWebsiteViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="l0L-Tr-BNw">
                         <rect key="frame" x="0.0" y="64" width="768" height="960"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -326,7 +327,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="ADP" id="wVU-12-bbA"/>
-                    <navigationItem key="navigationItem" title="Benefits" id="RDR-C9-Uim">
+                    <navigationItem key="navigationItem" title="BHC Website" id="RDR-C9-Uim">
                         <barButtonItem key="backBarButtonItem" title="Back" id="FIz-8t-hK4"/>
                     </navigationItem>
                     <connections>
@@ -343,6 +344,49 @@
         <image name="photo-frame.png" width="297" height="199"/>
         <image name="second" width="16" height="16"/>
     </resources>
+    <classes>
+        <class className="ContactUSViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ContactUSViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="submitForm:"/>
+                <relationship kind="outlet" name="requester_comments" candidateClass="UITextView"/>
+                <relationship kind="outlet" name="requester_email" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="requester_name" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="submit" candidateClass="UIBarButtonItem"/>
+            </relationships>
+        </class>
+        <class className="FindTerminalViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/FindTerminalViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="refreshTapped:"/>
+                <relationship kind="outlet" name="mapView" candidateClass="MKMapView"/>
+                <relationship kind="outlet" name="searchBar" candidateClass="UISearchBar"/>
+                <relationship kind="outlet" name="terminalDetailViewController" candidateClass="TerminalDetailViewController"/>
+            </relationships>
+        </class>
+        <class className="HomeViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/HomeViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="nav" candidateClass="UINavigationBar"/>
+            </relationships>
+        </class>
+        <class className="JobApplicationViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/JobApplicationViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="webView" candidateClass="UIWebView"/>
+            </relationships>
+        </class>
+        <class className="TerminalDetailViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/TerminalDetailViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="getDrivingDirections:"/>
+                <relationship kind="outlet" name="directions" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="drivingDirections" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="locationDetailViewer" candidateClass="UITextView"/>
+                <relationship kind="outlet" name="locationName" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackTranslucent"/>
         <simulatedOrientationMetrics key="orientation"/>

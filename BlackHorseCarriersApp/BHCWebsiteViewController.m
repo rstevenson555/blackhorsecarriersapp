@@ -1,19 +1,15 @@
 //
-//  JobApplicationViewController.m
+//  ADPBenefitsViewController.m
 //  BlackHorseCarriersApp
 //
 //  Created by Robert Stevenson on 9/5/12.
 //  Copyright (c) 2012 Robert Stevenson. All rights reserved.
 //
 
-#import "JobApplicationViewController.h"
+#import "BHCWebsiteViewController.h"
 #import "Constants.h"
 
-@interface JobApplicationViewController ()
-@end
-
-
-@implementation JobApplicationViewController
+@implementation BHCWebsiteViewController
 @synthesize webView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -27,7 +23,7 @@
 
 - (void)viewDidLoad
 {
-    NSString *urlAddress = JOB_APPLICATION_URL;
+    NSString *urlAddress = BLACKHORSE_WEBSITE;
     
     //Create a URL object.
     NSURL *url = [NSURL URLWithString:urlAddress];

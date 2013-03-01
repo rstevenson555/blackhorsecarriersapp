@@ -19,7 +19,6 @@
 @property (assign) boolean_t movedtozero;
 @property (retain, nonatomic ) CLLocation* initialLocation;
 @property (retain, nonatomic) NSMutableArray *locItems;
-@property (retain, nonatomic) MKMapItem *currentLocation;
 @property (nonatomic, retain) IBOutlet TerminalDetailViewController *terminalDetailViewController;
 
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;

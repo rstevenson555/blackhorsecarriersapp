@@ -13,6 +13,7 @@
 #import "TerminalDetailViewController.h"
 #import "Constants.h"
 #import <AddressBook/AddressBook.h>
+#import "BHCSystem.h"
 
 @implementation FindTerminalViewController
 
@@ -46,7 +47,7 @@ void putstr(NSString *str) {
         terminalDetailViewController = [sb_pad instantiateViewControllerWithIdentifier:@"TerminalDetailViewController"];
     }
 
-    self.currentLocation = [MKMapItem mapItemForCurrentLocation];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -113,6 +114,11 @@ void putstr(NSString *str) {
 
 
     terminalDetailViewController.locationDetailViewer.text = buffer;
+    if (!SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
+        terminalDetailViewController.directions.hidden = true;
+    } else {
+        terminalDetailViewController.directions.hidden = false;
+    }
 
     /**
      Location Name
@@ -192,7 +198,8 @@ void putstr(NSString *str) {
 - (void)mapView:(MKMapView *)mapv didUpdateUserLocation:(MKUserLocation *)userLocation {
     if (initialLocation == NULL) {
         initialLocation = userLocation.location;
-
+        
+        
         CLLocationCoordinate2D currentCoord = userLocation.location.coordinate; // Grab user's coordinate
         MKCoordinateSpan span = {.latitudeDelta = 0.02, .longitudeDelta = 0.02}; // set range of zoom
         MKCoordinateRegion region;
@@ -398,9 +405,11 @@ void putstr(NSString *str) {
             [NSNumber numberWithInteger:MKMapTypeStandard],
             MKLaunchOptionsShowsTrafficKey : @YES
     };
-
+    
+    MKMapItem *currentLocation = [MKMapItem mapItemForCurrentLocation];
+    
     NSMutableArray *directionArray = [NSMutableArray arrayWithCapacity:0];
-    [directionArray addObject:self.currentLocation];
+    [directionArray addObject:currentLocation];
     [directionArray addObject:annotation.mapitem];
     [MKMapItem openMapsWithItems:directionArray launchOptions:options];
     return self;

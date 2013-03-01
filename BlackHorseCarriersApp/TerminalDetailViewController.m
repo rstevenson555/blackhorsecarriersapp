@@ -15,7 +15,7 @@
 
 @implementation TerminalDetailViewController
 
-@synthesize locationName, findTerminalViewController, locationDetailViewer;
+@synthesize locationName, findTerminalViewController, locationDetailViewer, directions;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -39,6 +39,7 @@
 - (void)viewDidUnload {
     locationName = nil;
     [self setDrivingDirections:nil];
+    [self setDirections:nil];
     [super viewDidUnload];
 }
 
