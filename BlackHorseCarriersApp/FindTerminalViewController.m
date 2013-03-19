@@ -69,10 +69,6 @@ void putstr(NSString *str) {
     [self.navigationController setToolbarHidden:YES animated:NO];
     [self.navigationController pushViewController:terminalDetailViewController animated:YES];
 
-    //TerminalAnnotation *annotation = (TerminalAnnotation*)[[mapView annotations] objectAtIndex:tag];
-    //NSLog(@"annotation clicked is: %@", annotation);
-    // 2700 Saucon Valley Road,Center Valley,PA 18034
-
     terminalDetailViewController.findTerminalViewController = self;
 
     /* set the field labels on the terminal Detail View */
@@ -143,10 +139,6 @@ void putstr(NSString *str) {
             customPinView.canShowCallout = YES;
 
             // add a detail disclosure button to the callout which will open a new view controller page
-            //
-            // note: you can assign a specific call out accessory view, or as MKMapViewDelegate you can implement:
-            //  - (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control;
-            //
             UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
 
             [rightButton addTarget:self
@@ -167,23 +159,6 @@ void putstr(NSString *str) {
 - (IBAction)annotationViewClick:(id)sender {
     NSLog(@"clicked");
 }
-
-/*- (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
- {
- self.mapView.centerCoordinate = userLocation.location.coordinate;
- }*/
-
-// Tell MKMapView to zoom to current location when found
-/*- (void)mapView:(MKMapView *)mv didUpdateUserLocation:(MKUserLocation *)userLocation
- {
- if (!movedtozero) {
- NSLog(@"didUpdateUserLocation just got called!");
- 
- //MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance([userLocation coordinate], 250, 250);
- //[mv setRegion:region animated:YES];
- }
- movedtozero = true;
- }*/
 
 - (void)mapView:(MKMapView *)mapv didUpdateUserLocation:(MKUserLocation *)userLocation {
     if (initialLocation == NULL) {
